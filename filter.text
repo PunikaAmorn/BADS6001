@@ -1,0 +1,21 @@
+Filter 
+-number showed of carpark (5-10)
+
+-car_park_type
+--BASEMENT CAR PARK (under ground)
+--COVERED CAR PARK  (indoor)
+--MECHANISED CAR PARK (machein)
+--MULTI-STOREY CAR PARK (building)
+--SURFACE CAR PARK (outdoor)
+
+-type_of_parking_system
+--ELECTRONIC PARKING
+--COUPON PARKING
+
+-night_parking
+--Yes
+--No
+
+pop-up Show information
+
+*Reset *Find

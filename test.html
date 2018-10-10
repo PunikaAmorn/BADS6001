@@ -1,0 +1,18 @@
+<html>
+
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+	var carpark ={} ;
+	$.ajax({
+	  url: 'https://api.data.gov.sg/v1/transport/carpark-availability',
+	  async: false,
+	  dataType: 'json',
+	  success: function (data) {
+		carpark = data;
+	  }
+	});
+
+console.log(carpark);
+
+</script>
+</html>

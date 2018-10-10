@@ -9,8 +9,70 @@
   </head>
   <body>
   
-    <div id="map"></div>
-	<input id="inputLoc"></input>
+	<div id="screen">
+		<div id="detail">
+			<div id="filterBlock">
+				<h4>Location</h4>
+				<div class="block">
+					<div class="title">Latitude</div>
+					<div class="location"><input class="inputLoc" id="inputLoc"></input></div>
+				</div>				
+				<div class="block">
+					<div class="title">Longitude</div>
+					<div class="location"><input class="inputLoc" id="inputLong"></input></div>
+				</div>				
+				
+				<span class="line" style="border: 1px solid #ddd;"></span>	
+				<h4>Filter</h4>	
+				
+				<div class="block">
+					<div class="title-dropdown">Type of Park System</div>
+					<div class="dropdown">
+						<select id="typeSystem">						  
+						  <option value="all">ALL PARKING</option>
+						  <option value="electronic">ELECTRONIC PARKING</option>
+						  <option value="coupon">COUPON PARKING</option>
+						</select>					  
+					</div>
+				</div>
+				
+				<span class="line"></span>	
+				
+				<div class="block">
+					<div class="title-dropdown">Car Park Type</div>
+					<div class="dropdown">
+						<select id="typePark">						  
+						  <option value="all">ALL CAR PARK</option>
+						  <option value="basement">BASEMENT CAR PARK</option>
+						  <option value="covered">COVERED CAR PARK</option>
+						  <option value="mechanised">MECHANISED CAR PARK</option>
+						  <option value="surface">SURFACE CAR PARK</option>
+						</select>					  
+					</div>
+				</div>
+								
+				<span class="line"></span>	
+				
+				<div class="block">
+					<div class="title-dropdown">Night Parking</div>
+					<div class="dropdown">
+						<select id="nightPark">				
+						  <option value="0">No</option>
+						  <option value="1">Yes</option>
+						</select>					  
+					</div>
+				</div>				
+				
+				<span class="line"></span>	
+				
+				<div class="block">
+					<button id="reset">Reset</button>
+					<button id="find">Find</button>
+				</div>
+			</div>
+		</div>
+		<div id="map"></div>
+	</div>
 	
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqoWGSQYygV-G1P5tVrj-dM2rVHR5wOGY"></script>
@@ -25,8 +87,19 @@
 			if (e.keyCode == 13) {
 				var getLocFromInput = $(this).val().split(',');
 				init(getLocFromInput[0],getLocFromInput[1]);
+				
+				//gat all distance // Euclidean Distance
+				var getDistance = findDistance(getLocFromInput[0],getLocFromInput[1]);
+				
+				setMap(1,getDistance[0]['lat'],getDistance[0]['lon']);
+				setMap(2,getDistance[1]['lat'],getDistance[1]['lon']);
+				setMap(3,getDistance[2]['lat'],getDistance[2]['lon']);
+				setMap(4,getDistance[3]['lat'],getDistance[3]['lon']);
+				setMap(5,getDistance[4]['lat'],getDistance[4]['lon']);
 			}
 		});
+		
+/*		
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		//test set location car park
 		$(document).ready(function($) {
@@ -36,7 +109,7 @@
 			setMap(4,1.3160961,103.7041594);
 			setMap(5,1.3140961,103.7051594);
 		});	
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		*/
     </script>
   </body>
 </html>
