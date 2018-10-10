@@ -35,25 +35,30 @@ function showPosition(position) {
 
 // create map by google api
 var map;
-var carparkAvaliable = {};
-var carpark=[];
-function init(x,y,number) {
-	/////////// Map ///////////
+function createMap(x,y){
 	// For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
 	var mapOptions = {
 		// How zoomed in you want the map to start at (always required)
 		zoom: 15,
 
 		// The latitude and longitude to center the map (always required)
-		center: new google.maps.LatLng(x,y),
+		center: new google.maps.LatLng(x,y)
 	};
 		
 	// Get the HTML DOM element that will contain your map 
 	var mapElement = document.getElementById('map');
 
 	// Create the Google Map using our element and options defined above
-	map = new google.maps.Map(mapElement, mapOptions);
+	map = new google.maps.Map(mapElement, mapOptions);	
 
+}
+
+var carparkAvaliable = {};
+var carpark=[];
+function init(x,y,number) {
+	/////////// Map ///////////
+	createMap(x,y);
+	
 	// Let's also add a marker while we're at it
 	var myLocMarker = new google.maps.Marker({
 		position: new google.maps.LatLng(x,y),
@@ -75,13 +80,13 @@ function init(x,y,number) {
 	carparkAvaliable = avaliablePark(carpark);	//gat all distance
 	
 	// Euclidean Distance
-	var getDistance = findDistance(x,y);
+	var getDistance = findDistance(x,y,carparkAvaliable);
 	
 	//function marker avaliable car park
-	marker = {}; console.log(getDistance);
+	marker = {}; 
 	if(getDistance.length<number){number = getDistance.length;}
 	for(var i=0 ;i<number;i++){
-		setMap(i+1,getDistance[i]['lat'],getDistance[i]['lon']);
+		setMap(i+1,getDistance[i]['lat'],getDistance[i]['lon'],getDistance[i]['name']);
 	}
 }	
 
@@ -93,12 +98,14 @@ function avaliablePark(carpark){
 	var typeSystem = $("#typeSystem").val();
 	var typePark = $("#typePark").val();
 	var filterCheck = false;
+	
 	Object.keys(obj).forEach(function(key) {
+		filterCheck = false;
 		var carpark_id = obj[key]['carpark_number'];
 		if(information[carpark_id] != undefined){
 			//check night park 
 			if(nightPark=="NO" || information[carpark_id]['night_parking']=="YES"){
-				//check type of parking system (ELECTRONIC or COUPON)
+				//check type of parking system (ELECTRONIC or COUPON)				
 				if(typeSystem=="all" || information[carpark_id]['type_of_parking_system'].indexOf(typeSystem) !== -1){
 					//check car park type (BASEMENT, COVERED, MECHANISED, MULTI-STOREY, SURFACE)
 					if(typePark=="all" || information[carpark_id]['car_park_type'].indexOf(typePark) !== -1){
@@ -118,7 +125,7 @@ function avaliablePark(carpark){
 }
 
 //find all avaliable car park distance
-function findDistance(x1,y1){ //x1,y1 from latitude and longitude from user location
+function findDistance(x1,y1,carparkAvaliable){ //x1,y1 from latitude and longitude from user location
 	var distance = [];
 	Object.keys(information).forEach(function(key) {
 		if(carparkAvaliable[key]){
@@ -128,7 +135,6 @@ function findDistance(x1,y1){ //x1,y1 from latitude and longitude from user loca
 			distance.push({'name': key ,'distance':dist ,'lat':x2 , 'lon':y2});
 		}
 	});
-	
 	return (distance.sort(dynamicSort('distance')));
 }
 
@@ -147,13 +153,41 @@ function dynamicSort(property) {
 
 // 5 marker the nearest (global value)
 var marker = {};
+var infowindow = {};
 //function set marker
-function setMap(num,locX,locY){
+function setMap(num,locX,locY,id){
 	marker['N'+num] = new google.maps.Marker({
 		position: new google.maps.LatLng(locX,locY),
 		map: map,
-		icon: 'img/mark-icon.png'
+		icon: 'img/mark-icon.png',
+		animation: google.maps.Animation.DROP,
+		title: num+") "+id+" : "+locX+","+locY
 	});
+	infowindow['N'+num] = new google.maps.InfoWindow({
+	  content: setTitleMarker(num,id),
+	  maxWidth: 250
+	});
+	marker['N'+num].addListener('click', function() {
+          infowindow['N'+num].open(map, marker['N'+num]);
+    });
+	
+}
+
+function setTitleMarker(num,id){
+	var infoText = "";
+	var info = information[id];
+	infoText = 
+	num+") "+id+
+	"<br> Address: "+info["address"]+
+	"<br> Type:&emsp;"+info["car_park_type"]+
+	"<br> System:&emsp;&emsp;"+info["type_of_parking_system"]+
+	"<br> Free Parking:&emsp;"+info["free_parking"]+
+	"<br> Night Parking:  "+info["night_parking"]+
+	"<br> Short Term Parking: "+info["short_term_parking"]+
+	"<br> Location:&emsp;"+info["x_coord"]+
+	" , <br>&emsp;&emsp;&emsp;&emsp;&emsp;"+info["y_coord"];
+
+	return infoText;
 }
 
 
