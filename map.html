@@ -15,15 +15,29 @@
 				<h4>Location</h4>
 				<div class="block">
 					<div class="title">Latitude</div>
-					<div class="location"><input class="inputLoc" id="inputLoc"></input></div>
+					<div class="location"><input class="inputLoc" id="inputLat"></input></div>
 				</div>				
 				<div class="block">
 					<div class="title">Longitude</div>
 					<div class="location"><input class="inputLoc" id="inputLong"></input></div>
 				</div>				
 				
-				<span class="line" style="border: 1px solid #ddd;"></span>	
+				<span class="lineBlock"></span>	
 				<h4>Filter</h4>	
+				
+				<div class="block">
+					<div class="title-dropdown">Number of Avaliable Car Park</div>
+					<div class="dropdown">
+						<select id="numberCar">						  
+						  <option value="5">5</option>
+						  <option value="10">10</option>
+						  <option value="15">15</option>
+						  <option value="20">20</option>
+						</select>					  
+					</div>
+				</div>
+				
+				<span class="line"></span>	
 				
 				<div class="block">
 					<div class="title-dropdown">Type of Park System</div>
@@ -63,11 +77,11 @@
 					</div>
 				</div>				
 				
-				<span class="line"></span>	
+				<span class="lineBlock"></span>		
 				
 				<div class="block">
-					<button id="reset">Reset</button>
-					<button id="find">Find</button>
+					<button id="reset" onclick="reset()">Reset</button>
+					<button id="find" onclick="createPoint()">Find</button>
 				</div>
 			</div>
 		</div>
@@ -80,36 +94,24 @@
 		// When the window has finished loading create our google map below
 		google.maps.event.addDomListener(window, 'load', getLocation());
 		
-
-		
 		//call function init when enter input location
-		$("#inputLoc").on('keyup', function (e) {
-			if (e.keyCode == 13) {
-				var getLocFromInput = $(this).val().split(',');
-				init(getLocFromInput[0],getLocFromInput[1]);
-				
-				//gat all distance // Euclidean Distance
-				var getDistance = findDistance(getLocFromInput[0],getLocFromInput[1]);
-				
-				setMap(1,getDistance[0]['lat'],getDistance[0]['lon']);
-				setMap(2,getDistance[1]['lat'],getDistance[1]['lon']);
-				setMap(3,getDistance[2]['lat'],getDistance[2]['lon']);
-				setMap(4,getDistance[3]['lat'],getDistance[3]['lon']);
-				setMap(5,getDistance[4]['lat'],getDistance[4]['lon']);
-			}
-		});
+		function createPoint() {
+			var getLatFromInput = $("#inputLat").val();				
+			var getLongtFromInput = $("#inputLong").val();
+			var numberOfAvaliable = $("#numberCar").val();
+			console.log(getLatFromInput,getLongtFromInput,numberOfAvaliable);
+			init(getLatFromInput,getLongtFromInput,numberOfAvaliable);				
+		};
 		
-/*		
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-		//test set location car park
-		$(document).ready(function($) {
-			setMap(1,1.3139961,103.7141594);
-			setMap(2,1.3140961,103.7021594);
-			setMap(3,1.3150961,103.7041594);
-			setMap(4,1.3160961,103.7041594);
-			setMap(5,1.3140961,103.7051594);
-		});	
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		*/
+		function reset(){
+			document.getElementById("inputLat").value = "1.2867309";			
+			document.getElementById("inputLong").value = "103.8542765";	
+			document.getElementById("numberCar").value = 5;
+			document.getElementById("typeSystem").value = "all";
+			document.getElementById("typePark").value = "all";
+			document.getElementById("nightPark").value = 0;
+		}
+
     </script>
   </body>
 </html>

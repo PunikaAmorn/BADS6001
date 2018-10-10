@@ -2,6 +2,7 @@
 
 var information = {};
 function getLocation() {
+	//all car park information
 	$.ajax({
 	  url: 'hdb-carpark-information.json',
 	  async: false,
@@ -10,30 +11,38 @@ function getLocation() {
 		information = data;
 	  }
 	});
+	//get by location by navigator
 	if (navigator.geolocation) {
 		var check = navigator.geolocation.getCurrentPosition(showPosition);
 		if(check == undefined){
-			document.getElementById("inputLoc").value = "1.3139961,103.7041594";
-			init(1.4357238,103.7800097);
+			document.getElementById("inputLat").value = "1.4357238";			
+			document.getElementById("inputLong").value = "103.7800097";		
+			document.getElementById("numberCar").value = 5;
+			init(1.4357238,103.7800097,5);
 		}
 	} else { 
 		alert("Geolocation is not supported by this browser.");
-		document.getElementById("inputLoc").value = "1.3139961,103.7041594";
-		init(1.4357238,103.7800097);
+		document.getElementById("inputLat").value = "1.4357238";
+		document.getElementById("inputLong").value = "103.7800097";
+		document.getElementById("numberCar").value = 5;
+		init(1.4357238,103.7800097,5);
 	}
 }
 
 //show input position
 function showPosition(position) {
-	document.getElementById("inputLoc").value = position.coords.latitude+","+position.coords.longitude;
-	init(position.coords.latitude,position.coords.longitude);
+	document.getElementById("inputLat").value = position.coords.latitude;
+	document.getElementById("inputLong").value = position.coords.longitude;
+	//document.getElementById("inputLoc").value = position.coords.latitude+","+position.coords.longitude;
+	init(position.coords.latitude,position.coords.longitude,5);
 }// singapore >>1.3139961,103.7041594
 
 
 // create map by google api
 var map;
 var carparkAvaliable = {};
-function init(x,y) {
+var carpark=[];
+function init(x,y,number) {
 	// Basic options for a simple Google Map
 	// For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
 	var mapOptions = {
@@ -45,8 +54,7 @@ function init(x,y) {
 
 		// How you would like to style the map. 
 		// This is where you would paste any style found on Snazzy Maps.
-		/*styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":10}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#fafafa"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#e1e1e1"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#8dc63f"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e1e1e1"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#e1e1e1"}]}]
-	*/};
+	};
 		
 	// Get the HTML DOM element that will contain your map 
 	// We are using a div with id="map" seen below in the <body>
@@ -61,7 +69,8 @@ function init(x,y) {
 		map: map,
 		icon: 'img/car-icon.png'
 	});
-	var carpark=[];
+	
+	// get avaliable car park
 	$.ajax({
 	  url: 'https://api.data.gov.sg/v1/transport/carpark-availability',
 	  async: false,
@@ -70,25 +79,25 @@ function init(x,y) {
 		carpark = data;
 	  }
 	});
+	
 	//get avaliable carpark > 0
-	carparkAvaliable = avaliablePark(carpark);	//gat all distance 
+	carparkAvaliable = avaliablePark(carpark);	//gat all distance
+	
 	//console.log(carpark);
 	//console.log(carparkAvaliable);
 	// Euclidean Distance
 	var getDistance = findDistance(x,y);
 	
-	setMap(1,getDistance[0]['lat'],getDistance[0]['lon']);
-	setMap(2,getDistance[1]['lat'],getDistance[1]['lon']);
-	setMap(3,getDistance[2]['lat'],getDistance[2]['lon']);
-	setMap(4,getDistance[3]['lat'],getDistance[3]['lon']);
-	setMap(5,getDistance[4]['lat'],getDistance[4]['lon']);
+	marker = {};
+	for(i=0 ;i<number;i++){
+		setMap(i+1,getDistance[i]['lat'],getDistance[i]['lon']);
+	}
 }
 	
 // 5 marker the nearest (global value)
-var marker = {N1:0,N2:0,N3:0,N4:0,N5:0};
+var marker = {};
 //function set marker
 function setMap(num,locX,locY){
-
 	marker['N'+num] = new google.maps.Marker({
 		position: new google.maps.LatLng(locX,locY),
 		map: map,
@@ -100,15 +109,15 @@ function avaliablePark(carpark){
 	var lots = {};
 	var obj = carpark.items[0]['carpark_data'];
 	Object.keys(obj).forEach(function(key) {
-		if(obj[key]['carpark_info'][0]['lots_available']>=5){
+		if(obj[key]['carpark_info'][0]['lots_available']>1){
 			lots[obj[key]['carpark_number']] = {'lots_available' : obj[key]['carpark_info'][0]['lots_available']};
 		}
 	});
 	return lots;
 }
 
-var distance = [];
 function findDistance(x1,y1){ //x1,y1 from latitude and longitude from user location
+	var distance = [];
 	Object.keys(information).forEach(function(key) {
 		if(carparkAvaliable[key]){
 			var x2 = information[key]["x_coord"];

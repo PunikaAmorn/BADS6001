@@ -26,7 +26,7 @@ html, body {
 /*style of input*/
 #filterBlock{
 	width:80%;
-	padding:10%;	
+	padding:0px 10%;	
 }
 .block{	
 	width:100%;
@@ -53,11 +53,19 @@ html, body {
 }
 
 .line{
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 	float:left;
 	width:100%;   
 	border: 1px solid #eee;
+}
+.lineBlock{
+	margin-top: 15px;
+	margin-bottom: 15px;
+	float:left;
+	width:110%;   
+	border: 1px solid #bbb;
+	margin-left: -5%;
 }
 
 .title-dropdown{
