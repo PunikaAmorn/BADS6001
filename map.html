@@ -44,8 +44,8 @@
 					<div class="dropdown">
 						<select id="typeSystem">						  
 						  <option value="all">ALL PARKING</option>
-						  <option value="electronic">ELECTRONIC PARKING</option>
-						  <option value="coupon">COUPON PARKING</option>
+						  <option value="ELECTRONIC">ELECTRONIC PARKING</option>
+						  <option value="COUPON">COUPON PARKING</option>
 						</select>					  
 					</div>
 				</div>
@@ -57,10 +57,11 @@
 					<div class="dropdown">
 						<select id="typePark">						  
 						  <option value="all">ALL CAR PARK</option>
-						  <option value="basement">BASEMENT CAR PARK</option>
-						  <option value="covered">COVERED CAR PARK</option>
-						  <option value="mechanised">MECHANISED CAR PARK</option>
-						  <option value="surface">SURFACE CAR PARK</option>
+						  <option value="BASEMENT">BASEMENT CAR PARK</option>
+						  <option value="COVERED">COVERED CAR PARK</option>
+						  <option value="MECHANISED">MECHANISED CAR PARK</option>
+						  <option value="MULTI-STOREY">MULTI-STOREY CAR PARK</option>
+						  <option value="SURFACE">SURFACE CAR PARK</option>
 						</select>					  
 					</div>
 				</div>
@@ -71,8 +72,8 @@
 					<div class="title-dropdown">Night Parking</div>
 					<div class="dropdown">
 						<select id="nightPark">				
-						  <option value="0">No</option>
-						  <option value="1">Yes</option>
+						  <option value="NO">NO</option>
+						  <option value="YES">YES</option>
 						</select>					  
 					</div>
 				</div>				
@@ -98,8 +99,7 @@
 		function createPoint() {
 			var getLatFromInput = $("#inputLat").val();				
 			var getLongtFromInput = $("#inputLong").val();
-			var numberOfAvaliable = $("#numberCar").val();
-			console.log(getLatFromInput,getLongtFromInput,numberOfAvaliable);
+			var numberOfAvaliable = $("#numberCar").val();			
 			init(getLatFromInput,getLongtFromInput,numberOfAvaliable);				
 		};
 		
@@ -109,7 +109,7 @@
 			document.getElementById("numberCar").value = 5;
 			document.getElementById("typeSystem").value = "all";
 			document.getElementById("typePark").value = "all";
-			document.getElementById("nightPark").value = 0;
+			document.getElementById("nightPark").value = "NO";
 		}
 
     </script>

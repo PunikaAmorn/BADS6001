@@ -15,27 +15,22 @@ function getLocation() {
 	if (navigator.geolocation) {
 		var check = navigator.geolocation.getCurrentPosition(showPosition);
 		if(check == undefined){
-			document.getElementById("inputLat").value = "1.4357238";			
-			document.getElementById("inputLong").value = "103.7800097";		
-			document.getElementById("numberCar").value = 5;
-			init(1.4357238,103.7800097,5);
+			reset();
+			init(1.2867309,103.8542765,5);
 		}
 	} else { 
 		alert("Geolocation is not supported by this browser.");
-		document.getElementById("inputLat").value = "1.4357238";
-		document.getElementById("inputLong").value = "103.7800097";
-		document.getElementById("numberCar").value = 5;
-		init(1.4357238,103.7800097,5);
+		reset();
+		init(1.2867309,103.8542765,5);
 	}
 }
 
-//show input position
+//show input position if get location by navigator
 function showPosition(position) {
 	document.getElementById("inputLat").value = position.coords.latitude;
 	document.getElementById("inputLong").value = position.coords.longitude;
-	//document.getElementById("inputLoc").value = position.coords.latitude+","+position.coords.longitude;
 	init(position.coords.latitude,position.coords.longitude,5);
-}// singapore >>1.3139961,103.7041594
+}
 
 
 // create map by google api
@@ -43,21 +38,17 @@ var map;
 var carparkAvaliable = {};
 var carpark=[];
 function init(x,y,number) {
-	// Basic options for a simple Google Map
+	/////////// Map ///////////
 	// For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
 	var mapOptions = {
 		// How zoomed in you want the map to start at (always required)
 		zoom: 15,
 
 		// The latitude and longitude to center the map (always required)
-		center: new google.maps.LatLng(x,y), // weltronroyaltech.co.,ltd
-
-		// How you would like to style the map. 
-		// This is where you would paste any style found on Snazzy Maps.
+		center: new google.maps.LatLng(x,y),
 	};
 		
 	// Get the HTML DOM element that will contain your map 
-	// We are using a div with id="map" seen below in the <body>
 	var mapElement = document.getElementById('map');
 
 	// Create the Google Map using our element and options defined above
@@ -83,39 +74,50 @@ function init(x,y,number) {
 	//get avaliable carpark > 0
 	carparkAvaliable = avaliablePark(carpark);	//gat all distance
 	
-	//console.log(carpark);
-	//console.log(carparkAvaliable);
 	// Euclidean Distance
 	var getDistance = findDistance(x,y);
 	
-	marker = {};
-	for(i=0 ;i<number;i++){
+	//function marker avaliable car park
+	marker = {}; console.log(getDistance);
+	if(getDistance.length<number){number = getDistance.length;}
+	for(var i=0 ;i<number;i++){
 		setMap(i+1,getDistance[i]['lat'],getDistance[i]['lon']);
 	}
-}
-	
-// 5 marker the nearest (global value)
-var marker = {};
-//function set marker
-function setMap(num,locX,locY){
-	marker['N'+num] = new google.maps.Marker({
-		position: new google.maps.LatLng(locX,locY),
-		map: map,
-		icon: 'img/mark-icon.png'
-	});
-}
+}	
 
+//get avaliable car park from filter
 function avaliablePark(carpark){
 	var lots = {};
 	var obj = carpark.items[0]['carpark_data'];
+	var nightPark = $("#nightPark").val();
+	var typeSystem = $("#typeSystem").val();
+	var typePark = $("#typePark").val();
+	var filterCheck = false;
 	Object.keys(obj).forEach(function(key) {
-		if(obj[key]['carpark_info'][0]['lots_available']>1){
-			lots[obj[key]['carpark_number']] = {'lots_available' : obj[key]['carpark_info'][0]['lots_available']};
+		var carpark_id = obj[key]['carpark_number'];
+		if(information[carpark_id] != undefined){
+			//check night park 
+			if(nightPark=="NO" || information[carpark_id]['night_parking']=="YES"){
+				//check type of parking system (ELECTRONIC or COUPON)
+				if(typeSystem=="all" || information[carpark_id]['type_of_parking_system'].indexOf(typeSystem) !== -1){
+					//check car park type (BASEMENT, COVERED, MECHANISED, MULTI-STOREY, SURFACE)
+					if(typePark=="all" || information[carpark_id]['car_park_type'].indexOf(typePark) !== -1){
+						filterCheck = true;
+					}
+				}
+			}
+			//if  filterCheck is true
+			if(filterCheck == true){
+				if(obj[key]['carpark_info'][0]['lots_available']>=5){ //if avaliable car park >=5 lots 
+					lots[carpark_id] = {'lots_available' : obj[key]['carpark_info'][0]['lots_available']};
+				}
+			}
 		}
 	});
 	return lots;
 }
 
+//find all avaliable car park distance
 function findDistance(x1,y1){ //x1,y1 from latitude and longitude from user location
 	var distance = [];
 	Object.keys(information).forEach(function(key) {
@@ -130,7 +132,7 @@ function findDistance(x1,y1){ //x1,y1 from latitude and longitude from user loca
 	return (distance.sort(dynamicSort('distance')));
 }
 
-//sort object
+//sort object by distance
 function dynamicSort(property) {
     var sortOrder = 1;
     if(property[0] === "-") {
@@ -143,6 +145,16 @@ function dynamicSort(property) {
     }
 }
 
+// 5 marker the nearest (global value)
+var marker = {};
+//function set marker
+function setMap(num,locX,locY){
+	marker['N'+num] = new google.maps.Marker({
+		position: new google.maps.LatLng(locX,locY),
+		map: map,
+		icon: 'img/mark-icon.png'
+	});
+}
 
 
 
