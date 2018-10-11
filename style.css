@@ -12,10 +12,16 @@
 	position:absolute;
 }
 #detail {
-	height: 100%;
+	height: 100vh;
+	overflow: auto;
 	left:0px;
 	width:20vw;
 	position:absolute;
+}
+
+h4{
+	display:block;
+	margin-bottom:8px;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -28,10 +34,14 @@ html, body {
 	width:80%;
 	padding:0px 10%;	
 }
-.block{	
+.loc{	
+	padding-bottom:15px;
+}
+.block, .button-block{	
 	width:100%;
 	float:left;
 	padding-bottom:5px;
+	padding-top:5px;
 }
 .title{
 	padding-top:8px;
@@ -41,7 +51,7 @@ html, body {
 }
 .location{
 	width:65%;
-	left:40%;
+	left:35%;
 	float:left;
 }
 .inputLoc{
@@ -54,18 +64,18 @@ html, body {
 }
 
 .line{
-	margin-top: 15px;
-	margin-bottom: 15px;
 	float:left;
 	width:100%;   
-	border: 1px solid #eee;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	border-top: 1px solid #eee;
 }
 .lineBlock{
 	margin-top: 15px;
 	margin-bottom: 15px;
 	float:left;
-	width:110%;   
-	border: 1px solid #bbb;
+	width:100%;   
+	border-bottom: 1px solid #bbb;
 	margin-left: -5%;
 }
 
@@ -106,4 +116,178 @@ button{
 #reset{
 	background-color: #f0ad4e;
     border-color: #eea236;
+}
+
+@media only screen and (max-width:1300px){
+	.title{
+		padding-top:8px;
+		width:100%;	
+		font-size: 16px;
+		float:left;
+	}
+	.location{
+		width:100%;
+		left:0px;
+		float:left;
+	}
+}
+
+@media only screen and (max-width:960px){
+	#map {
+		height: 70vh;	
+		top: 30vh;
+		left:0px;
+		width: 100vw;
+		position:absolute;
+	}
+	#detail {
+		height: 30vh;
+		overflow: auto;
+		left:0px;
+		top:0px;
+		width:100vw;
+		position:absolute;
+	}
+	#filterBlock{
+		width:98%;
+		padding: 8px 8px 5px 8px;	
+	}
+	.block{	
+		width:17.7%;
+		min-width:120px;
+		margin:0px;
+		padding-right:5px;
+		padding-left: 5px;
+		display:block;
+	}
+	.loc{
+		width:20%;	
+		min-width:175px;	
+		display:block;
+		padding-right:none;
+	}
+	.loc > .block{	
+		float:left;
+		width:100%;	
+		padding-bottom:0px;
+		margin-top: 5px;
+		display:block;
+	}
+	.title{
+		padding-top:8px;
+		width:45%;	
+		font-size: 16px;
+		float:left;
+		display:inline;
+	}
+	.location{
+		width:54%;
+		left:45%;
+		float: left;
+		display:inline;
+	}
+	.button-block{	
+		margin-top:3px;
+		margin-left: 8px;
+		width:100%;
+		float:center;
+		display:inline;
+	}
+	.line{
+		height:80px;
+		border-top: none;
+		border-left: 1px solid #eee;
+	}
+	.lineBlock{		
+		margin-top:0px;		
+		margin-bottom:3px;
+		margin-left: 3px;
+		padding-right: 15px;
+		float:left;
+		height:80px;  
+		border-bottom: none;
+		border-right: 1px solid #bbb;
+	}
+	button{
+		width:46%;
+		height:35px;
+	}
+	h4{
+		display: none;
+	}
+}
+
+@media only screen and (max-width:840px){
+	#map {
+		height: 100vh;
+		left:0px;
+		bottom:0px;
+		top:50px;
+		width: 100vw;
+		position:relative;
+	}
+	#detail {
+		height: auto;
+		left:0px;
+		top:0px;
+		width:100vw;
+		position:relative;
+		display:block;
+	}
+	#filterBlock{		
+		height: 100%;
+		width:80%;
+		padding:0px 10%;	
+	}
+	.block, .button-block{	
+		width:100%;
+		float:left;
+		padding-bottom:5px;
+		padding-top:5px;
+	}
+	.title{
+		padding-top:8px;
+		width:35%;	
+		font-size: 16px;
+		float:left;
+	}
+	.location{
+		width:65%;
+		left:35%;
+		float:left;
+	}
+	.inputLoc{
+		height:28px;
+		width:100%;
+		padding-left:5px;
+		font-size: 14px;
+		border: 1px solid #ccc;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	}
+
+	.line{
+		height: auto;
+		float:left;
+		width:100%;   
+		margin-top: 8px;
+		margin-bottom: 8px;
+		border-left: 0px;
+		border-top: 1px solid #eee;
+	}
+	.lineBlock{
+		margin-top: 15px;
+		margin-bottom: 15px;
+		float:left;
+		width:100%;   
+		border-right: 0px;
+		border-bottom: 1px solid #bbb;
+		margin-left: -5%;
+	}
+	button{
+		width:46%;
+		height:40px;
+	}
+	h4{
+		display: block;
+	}
 }

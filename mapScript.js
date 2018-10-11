@@ -161,7 +161,7 @@ function setMap(num,locX,locY,id){
 		map: map,
 		icon: 'img/mark-icon.png',
 		animation: google.maps.Animation.DROP,
-		title: num+") "+id+" : "+locX+","+locY
+		title: num+") "+id+" : "+information[id]["type_of_parking_system"]
 	});
 	infowindow['N'+num] = new google.maps.InfoWindow({
 	  content: setTitleMarker(num,id),

@@ -14,16 +14,17 @@
 		<div id="detail">
 			<div id="filterBlock">
 				<h4>Location</h4>
-				<div class="block">
-					<div class="title">Latitude</div>
-					<div class="location"><input class="inputLoc" id="inputLat"></input></div>
-				</div>				
-				<div class="block">
-					<div class="title">Longitude</div>
-					<div class="location"><input class="inputLoc" id="inputLong"></input></div>
-				</div>				
+				<div class="loc lineBlock">
+					<div class="block ">
+						<div class="title">Latitude</div>
+						<div class="location"><input class="inputLoc" id="inputLat"></input></div>
+					</div>				
+					<div class="block">
+						<div class="title">Longitude</div>
+						<div class="location"><input class="inputLoc" id="inputLong"></input></div>
+					</div>
+				</div>
 				
-				<span class="lineBlock"></span>	
 				<h4>Filter</h4>	
 				
 				<div class="block">
@@ -38,9 +39,7 @@
 					</div>
 				</div>
 				
-				<span class="line"></span>	
-				
-				<div class="block">
+				<div class="block line">
 					<div class="title-dropdown">Type of Park System</div>
 					<div class="dropdown">
 						<select id="typeSystem">						  
@@ -50,10 +49,8 @@
 						</select>					  
 					</div>
 				</div>
-				
-				<span class="line"></span>	
-				
-				<div class="block">
+								
+				<div class="block line">
 					<div class="title-dropdown">Car Park Type</div>
 					<div class="dropdown">
 						<select id="typePark">						  
@@ -65,11 +62,9 @@
 						  <option value="SURFACE">SURFACE CAR PARK</option>
 						</select>					  
 					</div>
-				</div>
-								
-				<span class="line"></span>	
+				</div>	
 				
-				<div class="block">
+				<div class="block line">
 					<div class="title-dropdown">Night Parking</div>
 					<div class="dropdown">
 						<select id="nightPark">				
@@ -78,10 +73,8 @@
 						</select>					  
 					</div>
 				</div>				
-				
-				<span class="lineBlock"></span>		
-				
-				<div class="block">
+								
+				<div class="button-block">
 					<button id="reset" onclick="reset()">Reset</button>
 					<button id="find" onclick="createPoint()">Find</button>
 				</div>
