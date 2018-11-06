@@ -185,7 +185,8 @@ function setTitleMarker(num,id){
 	"<br> Night Parking:  "+info["night_parking"]+
 	"<br> Short Term Parking: "+info["short_term_parking"]+
 	"<br> Location:&emsp;"+info["x_coord"]+
-	" , <br>&emsp;&emsp;&emsp;&emsp;&emsp;"+info["y_coord"];
+	" , <br>&emsp;&emsp;&emsp;&emsp;&emsp;"+info["y_coord"]+
+	"<br> <a  href='https://www.google.com/maps/dir/?api=1&origin="+$("#inputLat").val()+","+$("#inputLong").val()+"&destination="+info["x_coord"]+","+info["y_coord"]+"&travelmode=driving' target='_blank'>Navigate on Google map</a>";
 
 	return infoText;
 }
